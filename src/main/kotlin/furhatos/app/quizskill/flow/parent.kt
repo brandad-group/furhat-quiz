@@ -1,10 +1,9 @@
-package furhatos.app.newskill.flow
+package furhatos.app.quizskill.flow
 
-import furhatos.app.newskill.flow.main.Idle
+import furhatos.app.quizskill.flow.main.Idle
 import furhatos.flow.kotlin.*
 
 val Parent: State = state {
-    //include(wizardButtons)
 
     onUserEnter(instant = true) {
         when { // "it" is the user that entered

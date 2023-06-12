@@ -1,4 +1,4 @@
-package furhatos.app.newskill.setting
+package furhatos.app.quizskill.setting
 
 /** Engagement parameters */
 const val MAX_NUMBER_OF_USERS = 2 // Max amount of people that Furhat will recognize as users simultaneously

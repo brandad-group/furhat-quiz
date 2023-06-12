@@ -1,8 +1,7 @@
-package furhatos.app.newskill.flow.main
+package furhatos.app.quizskill.flow.main
 
-import furhatos.app.newskill.flow.Parent
+import furhatos.app.quizskill.flow.Parent
 import furhatos.flow.kotlin.*
-import furhatos.skills.Skill
 
 data class RecyclingQuestion(val article: String, val item: String, val bin: Bin)
 
@@ -34,13 +33,8 @@ val questions = listOf(
     RecyclingQuestion("eine", "Plastiktüte", Bin.PLASTIKMUELL)
 )
 
-class RecyclingQuizSkill : Skill() {
-    override fun start() {
-        Flow().run(Start)
-    }
-}
-
 enum class Bin(val names: List<String>) {
+
     PAPIERMUELL(listOf("Papier", "Papiermüll")),
     RESTMUELL(listOf("Rest", "Restmüll")),
     BIOMUELL(listOf("Bio", "Biotonne", "Biomüll")),
@@ -63,22 +57,24 @@ enum class Bin(val names: List<String>) {
 
 private const val NUM_QUESTIONS = 3
 
-val Start : State = state(Parent) {
+val Quiz : State = state(Parent) {
 
     onEntry {
-        furhat.say("Willkommen beim Recycling-Quiz. Ich stelle Ihnen jetzt $NUM_QUESTIONS Fragen.")
+        furhat.say("Willkommen beim Recycling-Quiz. Ich stelle Dir jetzt $NUM_QUESTIONS Fragen.")
         val randomQuestions = questions.shuffled().take(NUM_QUESTIONS)
-        goto(AskQuestion(randomQuestions))
+        goto(askQuestion(randomQuestions))
     }
 }
 
-fun AskQuestion(questions: List<RecyclingQuestion>) : State = state {
+fun askQuestion(questions: List<RecyclingQuestion>) : State = state {
     lateinit var question: RecyclingQuestion
     var successCounter = 0
+
     onEntry {
         question = questions.first()
         furhat.ask("In welchen Müllbehälter wirft man ${question.article} ${question.item}?")
     }
+
     onResponse {
         println("User response: $it.text")
         val userResponse = it.text
@@ -95,7 +91,7 @@ fun AskQuestion(questions: List<RecyclingQuestion>) : State = state {
         }
         val remainingQuestions = questions.drop(1)
         if (remainingQuestions.isNotEmpty()) {
-            goto(AskQuestion(remainingQuestions))
+            goto(askQuestion(remainingQuestions))
         } else {
             val successCounterStr = if (successCounter == 1) "eine" else successCounter.toString()
             furhat.say("Das war's. Danke für's Mitmachen! " +
