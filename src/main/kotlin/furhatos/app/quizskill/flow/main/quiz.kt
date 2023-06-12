@@ -35,7 +35,7 @@ val questions = listOf(
 
 enum class Bin(val names: List<String>) {
 
-    PAPIERMUELL(listOf("Papier", "Papiermüll")),
+    PAPIERMUELL(listOf("Papier", "Papiermüll", "Papier Müll")),
     RESTMUELL(listOf("Rest", "Restmüll")),
     BIOMUELL(listOf("Bio", "Biotonne", "Biomüll")),
     PLASTIKMUELL(listOf("Plastik", "Plastikmüll", "Kunststoffbehälter")),
@@ -56,19 +56,20 @@ enum class Bin(val names: List<String>) {
 }
 
 private const val NUM_QUESTIONS = 3
+var successCounter = 0
 
 val Quiz : State = state(Parent) {
 
     onEntry {
         furhat.say("Willkommen beim Recycling-Quiz. Ich stelle Dir jetzt $NUM_QUESTIONS Fragen.")
         val randomQuestions = questions.shuffled().take(NUM_QUESTIONS)
+        successCounter = 0
         goto(askQuestion(randomQuestions))
     }
 }
 
 fun askQuestion(questions: List<RecyclingQuestion>) : State = state {
     lateinit var question: RecyclingQuestion
-    var successCounter = 0
 
     onEntry {
         question = questions.first()
@@ -81,8 +82,8 @@ fun askQuestion(questions: List<RecyclingQuestion>) : State = state {
         val responseBin = Bin.fromName(userResponse)
         println("responseBin: $responseBin")
         if (responseBin == question.bin) {
-            furhat.say("Richtig!")
             successCounter++
+            furhat.say("Richtig!")
         } else {
             var article = question.article
             if (article == "einen")
@@ -93,6 +94,7 @@ fun askQuestion(questions: List<RecyclingQuestion>) : State = state {
         if (remainingQuestions.isNotEmpty()) {
             goto(askQuestion(remainingQuestions))
         } else {
+            println("successCounter: $successCounter")
             val successCounterStr = if (successCounter == 1) "eine" else successCounter.toString()
             furhat.say("Das war's. Danke für's Mitmachen! " +
                     "Du hast $successCounterStr von $NUM_QUESTIONS Fragen richtig beantwortet.")
