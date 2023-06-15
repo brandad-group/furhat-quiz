@@ -20,7 +20,7 @@ val Init: State = state {
     onEntry {
         /** start interaction */
         when {
-            furhat.isVirtual() -> goto(Quiz) // Convenient to bypass the need for user when running Virtual Furhat
+            furhat.isVirtual() -> goto(Idle) // Convenient to bypass the need for user when running Virtual Furhat
             users.hasAny() -> {
                 furhat.attend(users.random)
                 goto(Quiz)
