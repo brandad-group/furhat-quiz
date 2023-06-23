@@ -1,7 +1,7 @@
 package furhatos.app.quizskill.flow
 
 import furhatos.app.quizskill.flow.main.Idle
-import furhatos.app.quizskill.flow.main.Quiz
+import furhatos.app.quizskill.flow.main.AIGreeting
 import furhatos.app.quizskill.setting.DISTANCE_TO_ENGAGE
 import furhatos.app.quizskill.setting.MAX_NUMBER_OF_USERS
 import furhatos.flow.kotlin.State
@@ -23,7 +23,7 @@ val Init: State = state {
             furhat.isVirtual() -> goto(Idle) // Convenient to bypass the need for user when running Virtual Furhat
             users.hasAny() -> {
                 furhat.attend(users.random)
-                goto(Quiz)
+                goto(AIGreeting)
             }
             else -> goto(Idle)
         }

@@ -3,12 +3,12 @@ package furhatos.app.quizskill.flow.main
 import com.theokanning.openai.service.OpenAiService
 import furhatos.app.quizskill.flow.Parent
 import furhatos.app.quizskill.flow.wizardButtons
+import furhatos.app.quizskill.setting.Config
 import furhatos.flow.kotlin.*
 import furhatos.nlu.common.Goodbye
 import java.util.concurrent.atomic.AtomicInteger
 
-val apikey = System.getenv("OPENAI_API_KEY" )
-val service = OpenAiService(apikey)
+val service = OpenAiService(Config.openaiApiKey)
 var counter = AtomicInteger(0)
 
 val AIGreeting: State = state(Parent) {
