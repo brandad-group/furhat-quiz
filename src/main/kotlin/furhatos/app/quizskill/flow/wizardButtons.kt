@@ -13,7 +13,7 @@ val wizardButtons = partialState {
         goto(Quiz)
     }
 
-    onButton("GPT 20 Questions", section = Section.LEFT, color = Color.Yellow) {
+    onButton("GPT Quiz", section = Section.LEFT, color = Color.Yellow) {
         goto(AIGreeting)
     }
 

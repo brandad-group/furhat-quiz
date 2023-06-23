@@ -15,7 +15,7 @@ val AIGreeting: State = state(Parent) {
     include(wizardButtons)
 
     onEntry {
-        furhat.ask("Wir spielen das Spiel '20 Fragen'. Du denkst an etwas und ich muss es erraten")
+        furhat.ask("Hast Du Lust zu spielen?")
     }
 
     onResponse<Goodbye> {
@@ -26,7 +26,8 @@ val AIGreeting: State = state(Parent) {
     onResponse {
         if (counter.get() < 20) {
             val robotResponse = call {
-                getDialogChatCompletion(service, counter)
+                //getDialogChatCompletion20Questions(service, counter)
+                getDialogChatCompletionMuellSpiel(service, counter)
             } as String?
             furhat.ask(robotResponse?:"Kannst Du das bitte wiederholen?")
         } else {

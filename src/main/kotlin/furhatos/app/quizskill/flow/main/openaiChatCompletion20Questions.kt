@@ -10,7 +10,7 @@ import kotlin.Exception
 import kotlin.String
 
 
-fun getDialogChatCompletion(service: OpenAiService, counter: AtomicInteger): String? {
+fun getDialogChatCompletion20Questions(service: OpenAiService, counter: AtomicInteger): String? {
     println("counter: ${counter.getAndIncrement()}")
     val startTime = System.currentTimeMillis()
 
