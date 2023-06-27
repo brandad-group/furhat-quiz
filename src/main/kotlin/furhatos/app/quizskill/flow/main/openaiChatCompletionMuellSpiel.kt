@@ -1,6 +1,7 @@
 package furhatos.app.quizskill.flow.main
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest
+import com.theokanning.openai.completion.chat.ChatCompletionResult
 import com.theokanning.openai.completion.chat.ChatMessage
 import com.theokanning.openai.service.OpenAiService
 import furhatos.flow.kotlin.DialogHistory
@@ -10,87 +11,94 @@ import kotlin.Exception
 import kotlin.String
 
 
-fun getDialogChatCompletionMuellSpiel(service: OpenAiService, counter: AtomicInteger): String? {
+fun getDialogChatCompletionMuellSpiel(service: OpenAiService, counter: AtomicInteger, numQuestions: Int): String? {
     println("counter: ${counter.getAndIncrement()}")
     val startTime = System.currentTimeMillis()
 
     val contextWindowSize = 10
-    val numQuestions = 20
-    val endToken = "$numQuestions Versuche erreicht"
-    val instruction = """Bitte verhalte dich wie ein Spielleiter. Du hast die Aufgabe die Spielregeln zu erklären und das Spiel zu leiten. 
-        Das Spiel ist ein Mülltrennungspiel. Der Spieler soll auswählen welcher Müllgruppe der Müll weggeworfen soll zugehörig ist. Du als Spielleiter erklärst kurz und knapp zu Beginn wie das Spiel läuft und beantwortest ggf. Rückfragen und stellst dann die Frage, ob der Spieler spielen möchte. 
-        Möchte er nicht spielen, verabschiedest du dich nett und fragst, ob jemand anderes spielen möchte. 
-        Möchte der Spieler spielen, wählst Du einen Eintrag aus der Auswahlliste der weg zu werfenden Dinge aus und fragst den Spieler in welchen Müll er denkt dieses Ding gehört. Lese dem Spieler hierfür die ersten zweimal die Liste der Müllkategorien vor. 
-        Ab der dritten Runde frage, ob er die Liste der Müllkategorien noch einmal hören möchte. Beantwortet der Spieler die Frage richtig gib ein kurzes Feedback, dass es richtig war und erkläre in 2 Sätzen, warum es so ist. Frage dann den Spieler, ob er bereit ist für die nächste Frage. Falls nicht, frage was er noch braucht. Falls er positiv antwortet, stelle die nächste Frage. 
-        War die erste Antwort falsch bitte den Spieler nochmal zu überlegen und eine neue antwort zu geben. Erkläre an dieser Stelle nichts Weiteres sondern bitte aussließlich darum nochmal nachzudenken. Antwortet der Spieler nochmals falsch, erkläre zu welcher Kategorie der Müll gehört und warum. 
-        Nach 7 Runden ist das Spiel beendet. Merke dir nach jeder Frage die Anzahl der richtigen Antworten.
-        Vergewissere dich, dass der Spieler dies auch getan hat mit einer Rückfrage. 
-        Sollte eine Antwort des Spielers länger als 10 Sekunden dauern, frage nach, ob du es nochmal wiederholen sollst oder er noch nachdenkt. 
-        
-        Bitte den Spieler, bevor du die erste Frage stellst den Timer zu starten und vergewissere dich, dass der Spieler es getan hat, frage dies bitte nur zu Beginn und danach nicht nochmal. Bei Abschluss des Spiels bitte den Spieler den Timer zu stoppen. 
-        
-        Bitte liste bei den Spielregeln nicht die Auswahlliste der weg zu werfenden Dinge auch nicht auf Nachfrage, sondern zähle nur die Müllkategorien auf. 
-        Die erste Frage wird von Dir gestellt. 
-        
-        Der Spieler wählt aus dem Pool an Müllsorten aus.
-        Bitte verwende pro Spiel, das aus 7 Fragen besteht, 7 verschiedene Einträge und versuche alle Einträge über alle Spiele gleich oft zu verwenden.
-        
-        Bitte bringe die Spieler immer wieder zum Spiel zurück und folge keinen abschweifenden Fragestellungen.
-        
-        Nenne bei jeder zweiten Runde den Punktestand
-        
-        Bitte gibt am Ende die Gesamtanzahl der richtigen Antworten aus und bitte den Spieler dies mit der Spieldauer, die er vom Timer ablesen soll, auf eine Karte zu schreiben und ans Board zu hängen.
-        
-        Es gibt folgende Müllkategorien – bitte berücksichtige hier auch andere Formulierungen, die das Gleiche meinen:
-        Restmüll
-        Biomüll
-        Papiermüll
-        Gelber Sack
-        Glas
-        Sperrmüll
-        Sondermüll
-        
-        Für Gelber Sack geht auch Plastikmüll oder Gelbe Tonne
-        
-        Hier die Auswahllist an weg zu werfenden Dingen:
-        Kassenbelege
-        Tiefkühl-Kartons
-        Backpapier
-        Kunststoffspielzeug
-        Milchkartons
-        Kosmetikprodukte wie Lippenstift, Nagellack
-        Druckerpatronen und Toner
-        CDs und DVDs
-        Staubsaugerbeutel
-        Schrauben, Nägel und andere Kleinteile aus Metall
-        Fotopapier
-        Tapetenreste
-        Asche aus Kaminen und Grills
-        Feuchttücher und Babytücher
-        Haushaltsreiniger und Chemikalien
-        Klebeband und Etiketten
-        Wachs- und Korkreste
-        Fritteusen Öl und andere Speiseöle
-        Kaffeekapseln
-        Zahnpastatuben
-        Keramik und Porzellan
-        Windeln und Katzenstreu
-        Pizzaschachteln
-        Joghurtbecher
-        Taschentücher und Küchenpapier
-        Glühlampen und Energiesparlampen
-        Styropor
-        Fensterglas und Spiegel
-        Verschmutzte Aluminiumfolie
-        Zigarettenstummel
-        Medikamente
-        Batterien und Akkus
-        Eierkarton oder Eierschachtel
-        Verschlüsse und Deckel von Flaschen und Gläsern ohne Pfand
-        Briefumschläge mit Sichtfenster
-        
-        
-        Bitte beginne mit dem Spiel als Spielleiter und warte auf die Aktion des Spielers."""
+
+    //val endToken = "$numQuestions Versuche erreicht"
+    val instruction = """      
+Verhalte dich wie ein Spielleiter. Du hast die Aufgabe die Spielregeln zu erklären und das Spiel zu leiten. 
+Das Spiel ist ein Mülltrennungspiel. Der Spieler soll auswählen zu welcher Müllgruppe der Müll weggeworfen soll zugehörig ist. 
+Du als Spielleiter erklärst kurz und knapp zu Beginn wie das Spiel läuft und beantwortest ggf. Rückfragen und stellst 
+dann die Frage, ob der Spieler spielen möchte. Möchte er nicht spielen, verabschiedest du dich nett und beendest deine 
+Antwort mit $GPT_END_TOKEN. 
+
+Möchte der Spieler spielen, wählst Du einen zufälligen Eintrag aus der 'Auswahlliste der wegzuwerfenden Dinge' aus und fragst den Spieler 
+in welchen Müll er denkt dieses Ding gehört. Es ist wichtig das der Eintrag aus der Liste zufällig gewählt wird! 
+'Auswahlliste der wegzuwerfenden Dinge':
+- Kassenbelege
+- Tiefkühl-Kartons
+- Backpapier
+- Kunststoffspielzeug
+- Milchkartons
+- Kosmetikprodukte wie Lippenstift, Nagellack
+- Druckerpatronen und Toner
+- CDs und DVDs
+- Staubsaugerbeutel
+- Schrauben, Nägel und andere Kleinteile aus Metall
+- Fotopapier
+- Tapetenreste
+- Asche aus Kaminen und Grills
+- Feuchttücher und Babytücher
+- Haushaltsreiniger und Chemikalien
+- Klebeband und Etiketten
+- Wachs- und Korkreste
+- Fritteusen Öl und andere Speiseöle
+- Kaffeekapseln
+- Zahnpastatuben
+- Keramik und Porzellan
+- Windeln und Katzenstreu
+- Pizzaschachteln
+- Joghurtbecher
+- Taschentücher und Küchenpapier
+- Glühlampen und Energiesparlampen
+- Styropor
+- Fensterglas und Spiegel
+- Verschmutzte Aluminiumfolie
+- Zigarettenstummel
+- Medikamente
+- Batterien und Akkus
+- Eierkarton oder Eierschachtel
+- Verschlüsse und Deckel von Flaschen und Gläsern ohne Pfand
+- Briefumschläge mit Sichtfenster   
+
+Lese dem Spieler hierfür in der ersten Runde die Liste der Müllkategorien vor.
+Es gibt folgende Müllkategorien – berücksichtige hier auch andere Formulierungen, die das Gleiche meinen:
+- Restmüll
+- Biomüll
+- Papiermüll
+- Gelber Sack
+- Glas
+- Sperrmüll
+- Sondermüll
+Akzeptiere auch Abwandlungen der Begriffe, für 'Gelber Sack' geht z.B. auch Plastikmüll oder Gelbe Tonne.
+
+Liste bei den Spielregeln nicht die Auswahlliste der wegzuwerfenden Dinge auf, auch nicht auf Nachfrage, sondern zähle nur die Müllkategorien auf. 
+
+Die erste Frage wird von Dir gestellt.  
+Ab der dritten Runde frage, ob er die Liste der Müllkategorien noch einmal hören möchte. 
+Beantwortet der Spieler die Frage richtig gib ein kurzes Feedback, dass es richtig war und erkläre in zwei Sätzen, warum es so ist. 
+Stelle dann die Frage für die nächste Runde.
+War die erste Antwort falsch bitte den Spieler nochmal zu überlegen und eine neue antwort zu geben, ohne dem Spieler die 
+richtige Müllkategorie zu verraten. Erkläre an dieser Stelle nichts weiteres sondern bitte aussließlich darum nochmal nachzudenken. 
+Antwortet der Spieler nochmals falsch, erkläre zu welcher Kategorie der Müll gehört und warum. 
+
+Nach $numQuestions Runden ist das Spiel beendet. Merke dir nach jeder Frage die Anzahl der richtigen Antworten.
+
+Der Spieler wählt aus dem Pool an Müllsorten aus.
+Verwende pro Spiel, das aus $numQuestions Fragen besteht, $numQuestions verschiedene Einträge und versuche alle Einträge über alle Spiele gleich oft zu verwenden.
+
+Bringe die Spieler immer wieder zum Spiel zurück und folge keinen abschweifenden Fragestellungen.        
+Nenne bei jeder zweiten Runde den Punktestand.        
+
+Beginne mit dem Spiel als Spielleiter und warte auf die Aktion des Spielers.
+Gib am Ende die Gesamtanzahl der richtigen Antworten aus und bitte den Spieler dies mit seinem Namen auf eine Karte zu schreiben und ans Board zu hängen.
+
+Falls ein Spieler nicht spielen möchte oder die letzte Runde vorbei ist beende deine Antwort mit $GPT_END_TOKEN
+        """
+
     val messages = mutableListOf(ChatMessage().apply { role = "system"; content = instruction })
 
     Furhat.dialogHistory.all.takeLast(contextWindowSize).forEach {
@@ -105,10 +113,6 @@ fun getDialogChatCompletionMuellSpiel(service: OpenAiService, counter: AtomicInt
         }
     }
 
-    if (counter.get() > numQuestions) {
-        messages.removeAt(messages.size-1)
-        messages.add(ChatMessage().apply { role = "user"; content = endToken })
-    }
 
     println("messages:")
     for (message in messages) {
@@ -122,17 +126,25 @@ fun getDialogChatCompletionMuellSpiel(service: OpenAiService, counter: AtomicInt
     try {
         val completion = service.createChatCompletion(completionRequest)
         val responseMessage = completion.choices.first().message.content
-        //Alternativ evtl. streamen der Antwort
-        //service.streamChatCompletion(chatCompletionRequest)
-        //    .doOnError(Throwable::printStackTrace)
-        //    .blockingForEach(System.out::println);
 
         val endTime = System.currentTimeMillis()
         println("elapsedTime: ${(endTime - startTime) / 1000.0} seconds")
-        println("completion: $completion")
+        logCompletion(completion)
+
         return responseMessage.trim()
     } catch (e: Exception) {
         println("Problem with connection to OpenAI")
+        println(e)
     }
     return null
+}
+
+private fun logCompletion(completion: ChatCompletionResult) {
+    //println("completion: $completion")
+    println("completion:")
+    println("  ${completion.model}")
+    for (choice in completion.choices) {
+        println("  ${choice.message}")
+    }
+    println("  ${completion.usage}")
 }
