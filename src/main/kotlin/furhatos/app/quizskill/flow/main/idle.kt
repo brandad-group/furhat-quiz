@@ -17,9 +17,7 @@ val Idle: State = state {
 
     onEntry {
         println("entering idle state")
-        //furhat.attendNobody()
-        //goto(NoGUI)
-        send(DataDelivery(buttons = buttons, inputFields = inputFieldData.keys.toList()))
+        furhat.attendNobody()
     }
 
     onUserEnter {
@@ -27,20 +25,12 @@ val Idle: State = state {
         goto(Quiz)
     }
 
-    //    // Users clicked any of our buttons
     onEvent(CLICK_BUTTON) {
         val data = it.get("data")
         println("data: $data")
-
-        // Directly respond with the value we get from the event, with a fallback
-        // furhat.say("You pressed ${data ?: "something I'm not aware of" }")
-
         if (data.equals("Quiz")) {
             goto(AIGreeting)
         }
-
-        // Let the GUI know we're done speaking, to unlock buttons
-        send(SPEECH_DONE)
     }
 
 }

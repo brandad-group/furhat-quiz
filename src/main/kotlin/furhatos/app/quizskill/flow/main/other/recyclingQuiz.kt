@@ -2,6 +2,7 @@ package furhatos.app.quizskill.flow.main.other
 
 import furhatos.app.quizskill.flow.Parent
 import furhatos.app.quizskill.flow.main.Idle
+import furhatos.app.quizskill.flow.wizardButtons
 import furhatos.flow.kotlin.*
 
 data class RecyclingQuestion(val article: String, val item: String, val bin: Bin)
@@ -60,6 +61,7 @@ private const val NUM_QUESTIONS = 3
 var successCounter = 0
 
 val Quiz : State = state(Parent) {
+    include(wizardButtons)
 
     onEntry {
         furhat.say("Willkommen beim Recycling-Quiz. Ich stelle Dir jetzt $NUM_QUESTIONS Fragen.")

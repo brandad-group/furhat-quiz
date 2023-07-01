@@ -26,8 +26,6 @@ val AIGreeting: State = state(Parent) {
     onEntry {
         counter.set(0)
         Furhat.dialogHistory.clear()
-        send(DataDelivery(buttons = buttons, inputFields = inputFieldData.keys.toList()))
-
         furhat.ask(wannaPlayPhrases())
     }
 
@@ -67,20 +65,13 @@ val AIGreeting: State = state(Parent) {
         furhat.ask("Ich habe leider nichts gehört")
     }
 
-    //    // Users clicked any of our buttons
     onEvent(CLICK_BUTTON) {
         val data = it.get("data")
         println("data: $data")
 
-        // Directly respond with the value we get from the event, with a fallback
-        // furhat.say("You pressed ${data ?: "something I'm not aware of" }")
-
         if (data.equals("Stop")){
             goto(Idle)
         }
-
-        // Let the GUI know we're done speaking, to unlock buttons
-        send(SPEECH_DONE)
     }
 }
  fun wannaPlayPhrases() = getRandomString(listOf(

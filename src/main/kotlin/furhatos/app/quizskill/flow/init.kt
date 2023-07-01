@@ -29,7 +29,6 @@ val InitGUI: State = state(null) {
     onEvent<SenseSkillGUIConnected> {
         goto(Init)
     }
-
 }
 
 val Init: State = state {
