@@ -42,7 +42,11 @@ val AIGreeting: State = state(Parent) {
                 gptResponseText = gptResponseText.removeSuffix(GPT_END_TOKEN)
                 furhat.say(gptResponseText)
             } else {
-                furhat.ask(gptResponseText, timeout = 10000)
+                furhat.ask(gptResponseText,
+                    //interruptable=true,  //recht empfindlich, ggf. mit Mikro eher sinnvoll
+                    timeout = 10000 //Wartezeit auf User Antwort
+                )
+
             }
         } else {
             //harter Ausstieg
