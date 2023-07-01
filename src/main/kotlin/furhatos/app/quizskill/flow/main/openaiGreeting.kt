@@ -1,8 +1,13 @@
 package furhatos.app.quizskill.flow.main
 
 import com.theokanning.openai.service.OpenAiService
+import furhatos.app.quizskill.DataDelivery
+import furhatos.app.quizskill.SPEECH_DONE
+import furhatos.app.quizskill.buttons
+import furhatos.app.quizskill.flow.CLICK_BUTTON
 import furhatos.app.quizskill.flow.Parent
 import furhatos.app.quizskill.flow.wizardButtons
+import furhatos.app.quizskill.inputFieldData
 import furhatos.app.quizskill.setting.Config
 import furhatos.flow.kotlin.*
 import furhatos.nlu.common.Goodbye
@@ -21,6 +26,7 @@ val AIGreeting: State = state(Parent) {
     onEntry {
         counter.set(0)
         Furhat.dialogHistory.clear()
+        send(DataDelivery(buttons = buttons, inputFields = inputFieldData.keys.toList()))
 
         furhat.ask(wannaPlayPhrases())
     }
@@ -59,6 +65,22 @@ val AIGreeting: State = state(Parent) {
 
     onNoResponse {
         furhat.ask("Ich habe leider nichts gehört")
+    }
+
+    //    // Users clicked any of our buttons
+    onEvent(CLICK_BUTTON) {
+        val data = it.get("data")
+        println("data: $data")
+
+        // Directly respond with the value we get from the event, with a fallback
+        // furhat.say("You pressed ${data ?: "something I'm not aware of" }")
+
+        if (data.equals("Stop")){
+            goto(Idle)
+        }
+
+        // Let the GUI know we're done speaking, to unlock buttons
+        send(SPEECH_DONE)
     }
 }
  fun wannaPlayPhrases() = getRandomString(listOf(

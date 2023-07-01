@@ -2,7 +2,7 @@ package furhatos.app.quizskill.flow
 
 import furhatos.app.quizskill.flow.main.AIGreeting
 import furhatos.app.quizskill.flow.main.Idle
-import furhatos.app.quizskill.flow.main.Quiz
+import furhatos.app.quizskill.flow.main.other.Quiz
 import furhatos.flow.kotlin.Color
 import furhatos.flow.kotlin.Section
 import furhatos.flow.kotlin.partialState

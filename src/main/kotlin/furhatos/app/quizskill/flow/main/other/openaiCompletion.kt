@@ -1,4 +1,4 @@
-package furhatos.app.quizskill.flow.main
+package furhatos.app.quizskill.flow.main.other
 
 import com.theokanning.openai.completion.CompletionRequest
 import com.theokanning.openai.service.OpenAiService

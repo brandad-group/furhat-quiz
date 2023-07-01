@@ -1,6 +1,7 @@
-package furhatos.app.quizskill.flow.main
+package furhatos.app.quizskill.flow.main.other
 
 import furhatos.app.quizskill.flow.Parent
+import furhatos.app.quizskill.flow.main.Idle
 import furhatos.flow.kotlin.*
 
 data class RecyclingQuestion(val article: String, val item: String, val bin: Bin)

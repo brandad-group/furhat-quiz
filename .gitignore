@@ -9,3 +9,4 @@ save_flow.xml
 *.iml
 secrets.properties
 .DS_Store
+dist/

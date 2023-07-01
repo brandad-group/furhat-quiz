@@ -20,4 +20,7 @@ Zum anpassen oder deployen neuer Skills (in Kotlin):
   - wichtig: braucht Java8
 - Furhat SDK muss laufen (siehe Schritte oben)
 - über IntelliJ ein Skill Projekt ausführen (navigate to the main.kt file of the skill and press the green play button )
+- Custom Gui bauen/starten (in assets/gui):
+  - npm install
+  - npm run build
 - für OpenAi Spiel: API Key hinterlegen in secrets.properties
