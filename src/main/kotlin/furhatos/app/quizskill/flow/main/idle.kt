@@ -16,7 +16,6 @@ val Idle: State = state {
     include(wizardButtons)
 
     onEntry {
-        println("entering idle state")
         furhat.attendNobody()
     }
 
@@ -27,7 +26,6 @@ val Idle: State = state {
 
     onEvent(CLICK_BUTTON) {
         val data = it.get("data")
-        println("data: $data")
         if (data.equals("Quiz")) {
             goto(AIGreeting)
         }

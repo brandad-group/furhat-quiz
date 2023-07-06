@@ -25,7 +25,6 @@ val CLICK_BUTTON = "ClickButton"
 val InitGUI: State = state(null) {
     include(wizardButtons)
 
-    println("InitGUI")
     onEvent<SenseSkillGUIConnected> {
         goto(Init)
     }

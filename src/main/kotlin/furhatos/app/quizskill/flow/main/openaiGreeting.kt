@@ -56,7 +56,6 @@ val AIGreeting: State = state(Parent) {
             //harter Ausstieg
             furhat.say("Danke fürs spielen")
             println("game ended")
-            counter.set(0)
             goto(Idle)
         }
     }
@@ -67,8 +66,6 @@ val AIGreeting: State = state(Parent) {
 
     onEvent(CLICK_BUTTON) {
         val data = it.get("data")
-        println("data: $data")
-
         if (data.equals("Stop")){
             goto(Idle)
         }
