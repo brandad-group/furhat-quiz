@@ -15,7 +15,7 @@ fun getDialogChatCompletionMuellSpiel(service: OpenAiService, counter: AtomicInt
     println("counter: ${counter.getAndIncrement()}")
     val startTime = System.currentTimeMillis()
 
-    val contextWindowSize = 10
+    val contextWindowSize = 100
 
     val instruction = """      
 Verhalte dich wie ein Spielleiter. Du hast die Aufgabe die Spielregeln zu erklären und das Spiel zu leiten. 
@@ -37,7 +37,7 @@ Zuerst kommt jeweils der Gegenstand der weggeworfen werden soll und in Klammern 
 Es ist wichtig das der Eintrag aus der Liste zufällig gewählt wird! 
 
 Lese dem Spieler hierfür in der ersten Runde die Liste der Müllkategorien vor.
-Es gibt folgende Müllkategorien: Restmüll, Biomüll, Papiermüll, Gelber Sack, Glas, Sperrmüll, Sondermüll
+Es gibt folgende Müllkategorien: Restmüll, Biomüll, Papiermüll, Gelber Sack, Glas, Sperrmüll, Sondermüll.
 Akzeptiere auch Abwandlungen der Begriffe, für 'Gelber Sack' geht z.B. auch Plastikmüll oder Gelbe Tonne.
 
 Zähle bei den Spielregeln nicht die Auswahlliste der wegzuwerfenden Dinge auf, auch nicht auf Nachfrage, sondern zähle nur die Müllkategorien auf. 
@@ -59,7 +59,6 @@ Beginne mit dem Spiel als Spielleiter und warte auf die Aktion des Spielers.
 Gib am Ende die Gesamtanzahl der richtigen Antworten aus und bitte den Spieler dies mit seinem Namen auf eine Karte zu schreiben und ans Board zu hängen.
 Falls ein Spieler nicht spielen möchte oder die letzte Runde vorbei ist beende deine Antwort mit $GPT_END_TOKEN
         """
-    //val endToken = "$numQuestions Versuche erreicht"
 
     val messages = mutableListOf(ChatMessage().apply { role = "system"; content = instruction })
 
@@ -74,7 +73,6 @@ Falls ein Spieler nicht spielen möchte oder die letzte Runde vorbei ist beende 
             else -> null
         }
     }
-
 
     println("messages:")
     for (message in messages) {
