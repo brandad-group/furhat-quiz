@@ -70,11 +70,16 @@ class App extends Component {
     }
 
     render() {
+      this.supStyle = {
+        verticalAlign: 'super',
+        fontSize: '16px'
+      };
+
       return (
           <Grid>
             <Row>
                 <Col sm={12}>
-                    <h1>Mülltrennungsspiel</h1>
+                    <h1><span>Mülltrennungsspiel<sup style={this.supStyle}>Beta</sup></span></h1>
                 </Col>
             </Row>
             <Row>
