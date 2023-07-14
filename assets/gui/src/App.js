@@ -87,6 +87,11 @@ class App extends Component {
                     { this.state.buttons.map((label) =>
                         <Button key={label} label={label} onClick={this.clickButton} speaking={this.state.speaking}/>
                     )}
+                  <ul>
+                      <li>laut und deutlich sprechen</li>
+                      <li>möglichst wenige Störgeräusche während der Spieler spricht</li>
+                      <li>falls das Quiz nicht korrekt funktioniert Stop drücken und neu starten</li>
+                  </ul>
                 </Col>
             </Row>
           </Grid>
