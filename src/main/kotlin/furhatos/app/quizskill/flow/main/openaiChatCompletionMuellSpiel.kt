@@ -30,7 +30,7 @@ in welche Müllkategorie dieser gehört. Die richtige Anwort steht in der Spalte
 | Gegenstand                | Müllkategorie | Begründung                                                                                     |
 |---------------------------|---------------|------------------------------------------------------------------------------------------------|
 | Kunststoffspielzeug       | Plastik       | Es handelt sich um ein Spielzeug aus Kunststoff, daher gehört es zur Kategorie Plastik.         |
-| Milchkartons              | Papier        | Der verwendete Materialmix enthält Kunststoff.                        |
+| Milchkartons              | Plastik       | Der verwendete Materialmix enthält Kunststoff.                        |
 | Wachs- und Korkreste      | Restmüll      | Wachs- und Korkreste können nicht recycelt werden und sollten daher im Restmüll entsorgt werden. |
 | Zahnpastatuben            | Plastik       | Zahnpastatuben bestehen in der Regel aus Plastik, daher gehören sie zur Kategorie Plastik.       |
 | Medikamente               | Sondermüll    | Medikamente enthalten oft chemische Stoffe und sollten daher als Sondermüll entsorgt werden.     |
