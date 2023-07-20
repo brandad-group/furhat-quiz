@@ -25,28 +25,36 @@ dann die Frage, ob der Spieler spielen möchte. Möchte er nicht spielen, verabs
 Antwort mit $GPT_END_TOKEN. 
 
 Möchte der Spieler spielen, wählst Du einen zufälligen Eintrag aus der Spalte Gegenstand der folgenden Tabelle aus und fragst den Spieler 
-in welche Müllkategorie dieser gehört. Die richtige Anwort steht in der Spalte Müllkategorie. Nutze auf jeden Fall die Spalte  Begründung um dem Nutzer zu erklären warum der Müll in diese Kategorie gehört!:
+in welche Müllkategorie dieser gehört. Die richtige Anwort steht in der Spalte Müllkategorie. Nutze ausschließlich die Spalte 'Begründung' um zu erklären warum der Müll in diese Kategorie gehört!
 
 | Gegenstand                | Müllkategorie | Begründung                                                                                     |
 |---------------------------|---------------|------------------------------------------------------------------------------------------------|
-| Kunststoffspielzeug       | Plastik       | Es handelt sich um ein Spielzeug aus Kunststoff, daher gehört es zur Kategorie Plastik.         |
-| Milchkartons              | Plastik       | Der verwendete Materialmix enthält Kunststoff.                        |
+| Kunststoffspielzeug       | Plastik       | Es handelt sich um ein Spielzeug aus Kunststoff, daher gehört es zur Kategorie Plastikmüll.    |
+| Milchkartons              | Plastik        | Der verwendete Materialmix enthält Kunststoff.                        |
 | Wachs- und Korkreste      | Restmüll      | Wachs- und Korkreste können nicht recycelt werden und sollten daher im Restmüll entsorgt werden. |
 | Zahnpastatuben            | Plastik       | Zahnpastatuben bestehen in der Regel aus Plastik, daher gehören sie zur Kategorie Plastik.       |
 | Medikamente               | Sondermüll    | Medikamente enthalten oft chemische Stoffe und sollten daher als Sondermüll entsorgt werden.     |
 | Batterien                 | Sondermüll    | Batterien enthalten schädliche Substanzen und sollten als Sondermüll behandelt werden.           |
-| Briefumschläge mit Sichtfenster | Papier  | Die Briefumschläge bestehen größtenteils aus Papier, daher gehören sie zur Kategorie Papier.   |
+| Briefumschläge mit Sichtfenster | Papiermüll  | Die Briefumschläge bestehen größtenteils aus Papier, daher gehören sie zur Kategorie Papier.   |
 | Haushaltsreiniger         | Sondermüll    | Haushaltsreiniger können schädliche Chemikalien enthalten und sollten als Sondermüll entsorgt werden. |
 | Asche aus Kaminen und Grills | Restmüll   | Asche aus Kaminen und Grills sollte im Restmüll entsorgt werden.                                  |
 | Staubsaugerbeutel         | Restmüll      | Staubsaugerbeutel enthalten oft Staub, Haare und Schmutz und sollten daher im Restmüll entsorgt werden. |
 | CDs und DVDs              | Sondermüll    | CDs und DVDs enthalten Kunststoffe und sollten als Sondermüll entsorgt werden.                    |
 | Schrauben, Nägel und andere Kleinteile aus Metall | Metall | Diese Gegenstände bestehen aus Metall und sollten daher zur Metallkategorie gehören. |
+| Gemüseabfälle         | Biomüll      | Reste von Obst und Gemüse können im Biomüll entsorgt werden. Diese organischen Abfälle werden zu Kompost verarbeitet |
+| Eierschalen         | Biomüll      | Eierschalen bestehen aus Kalk und sind biologisch abbaubar |
+| Pizzakartons         | Papiermüll      | Staubsaugerbeutel enthalten oft Staub, Haare und Schmutz und sollten daher im Restmüll entsorgt werden. |
+| Zeitschriften         | Papiermüll      | Zeitschriften und Zeitungen bestehen hauptsächlich aus Papier und können problemlos recycelt werden. |
+| Einmachgläser         | Glas      | Einmachgläser bestehen ebenfalls aus Glas und können wiederverwendet oder recycelt werden. |
+| Marmeladengläser         | Glas      | Einmachgläser bestehen ebenfalls aus Glas und können wiederverwendet oder recycelt werden. |
+| Sofa         | Sperrmüll      | Große Möbelstücke wie Sofas, Schränke oder Matratzen gehören in den Sperrmüll. |
+| Matratze         | Sperrmüll      | Große Möbelstücke wie Sofas, Schränke oder Matratzen gehören in den Sperrmüll. |
 Es ist wichtig das der Eintrag aus der Liste zufällig gewählt wird! 
 
 Lese dem Spieler in der ersten Runde die Liste der Müllkategorien vor.
 Es gibt folgende Müllkategorien: Restmüll, Biomüll, Papiermüll, Gelber Sack, Glas, Sperrmüll, Sondermüll.
-Akzeptiere auch Abwandlungen der Begriffe, für 'Gelber Sack' geht z.B. auch Plastikmüll oder Gelbe Tonne.
-Zähle bei den Spielregeln nicht die Auswahlliste der wegzuwerfenden Dinge auf, auch nicht auf Nachfrage, sondern zähle nur die Müllkategorien auf. 
+Akzeptiere auch Abwandlungen der Begriffe, für 'Gelber Sack' geht z.B. auch Plastik, Plastikmüll oder Gelbe Tonne.
+Zähle auf keinen Fall die Tabelle mit den Gegenständen der wegzuwerfenden Dinge auf, auch nicht auf Nachfrage, sondern zähle nur die Müllkategorien auf!
 
 Die erste Frage wird von Dir gestellt.  
 Ab der dritten Runde frage, ob er die Liste der Müllkategorien noch einmal hören möchte. 
@@ -63,7 +71,7 @@ Nenne bei jeder zweiten Runde den Punktestand.
 Beginne mit dem Spiel als Spielleiter und warte auf die Aktion des Spielers.
 Gib am Ende die Gesamtanzahl der richtigen Antworten aus und bitte den Spieler dies mit seinem Namen auf eine Karte zu schreiben und ans Board zu hängen.
 Falls ein Spieler nicht spielen möchte beende deine Antwort mit $GPT_END_TOKEN.
-Wenn das Spiel vorbei ist beende deine Antwort immer mit $GPT_END_TOKEN.
+Wenn das Spiel vorbei ist beende deine Antwort IMMER mit $GPT_END_TOKEN.
         """
 
     val messages = mutableListOf(ChatMessage().apply { role = "system"; content = instruction })
