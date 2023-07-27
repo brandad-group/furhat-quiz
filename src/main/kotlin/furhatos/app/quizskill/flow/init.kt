@@ -25,6 +25,12 @@ val CLICK_BUTTON = "ClickButton"
 val InitGUI: State = state(null) {
     include(wizardButtons)
 
+    init {
+        /** Set our default interaction parameters */
+        users.setSimpleEngagementPolicy(DISTANCE_TO_ENGAGE, MAX_NUMBER_OF_USERS)
+        furhat.setVoice(Language.GERMAN, Gender.FEMALE, true)
+    }
+
     onEvent<SenseSkillGUIConnected> {
         goto(Init)
     }
@@ -33,11 +39,6 @@ val InitGUI: State = state(null) {
 val Init: State = state {
     include(wizardButtons)
 
-    init {
-        /** Set our default interaction parameters */
-        users.setSimpleEngagementPolicy(DISTANCE_TO_ENGAGE, MAX_NUMBER_OF_USERS)
-        furhat.setVoice(Language.GERMAN, Gender.FEMALE, true)
-    }
     onEntry {
         send(DataDelivery(buttons = buttons, inputFields = inputFieldData.keys.toList()))
         /** start interaction */
